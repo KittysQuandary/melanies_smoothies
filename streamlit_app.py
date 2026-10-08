@@ -7,7 +7,7 @@ try:
     st.success("Connected")
 
     result = session.sql("select current_user(), current_role()").collect()
-    st.write(result)
+    #st.write(result)
 
 except Exception as e:
     st.exception(e)
