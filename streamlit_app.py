@@ -1,32 +1,6 @@
 # Import python packages
 import streamlit as st
-import base64
-import snowflake.connector
 from snowflake.snowpark.functions import col
-
-# 1. Fetch your single-line Base64 string from your Streamlit Dashboard secrets
-b64_key_string = st.secrets["connections"]["snowflake"]["private_key"]
-
-# 2. Decode it directly into the raw DER bytes that Snowflake requires
-pkb = base64.b64decode(b64_key_string)
-
-# 3. Connect to Snowflake cleanly using the decoded bytes
-conn = snowflake.connector.connect(
-    account=st.secrets["connections"]["snowflake"]["account"],
-    user=st.secrets["connections"]["snowflake"]["user"],
-    role=st.secrets["connections"]["snowflake"]["role"],
-    warehouse=st.secrets["connections"]["snowflake"]["warehouse"],
-    database=st.secrets["connections"]["snowflake"]["database"],
-    schema=st.secrets["connections"]["snowflake"]["schema"],
-    private_key=pkb # Passes the raw bytes directly
-)
-
-# Test and confirm success
-cursor = conn.cursor()
-cursor.execute("SELECT CURRENT_VERSION();")
-st.success(f"🎉 Connected successfully! Snowflake Version: {cursor.fetchone()[0]}")
-
-
 
 # Write directly to the app
 st.title(f"Customise Your Smoothie! :cup_with_straw:")
