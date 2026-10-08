@@ -1,5 +1,18 @@
 # Import python packages
 import streamlit as st
+
+try:
+conn = st.connection("snowflake")
+session = conn.session()
+st.success("Connected")
+ 
+result = session.sql("select current_user(), current_role()").collect()
+st.write(result)
+ 
+except Exception as e:
+st.exception(e)
+
+
 from snowflake.snowpark.functions import col
 
 # Write directly to the app
