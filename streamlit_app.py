@@ -66,7 +66,7 @@ smoothiefroot_response = requests.get(url)
 st.write(url)
 print(repr(url))
 st.text(smoothiefroot_response.json())
-
+sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
 
 
 
