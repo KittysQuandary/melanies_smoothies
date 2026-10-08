@@ -4,7 +4,7 @@ import streamlit as st
 conn = st.connection("snowflake")
 session = conn.session()
 st.success("Connected")
- 
+
 result = session.sql("select current_user(), current_role()").collect()
 st.write(result)
  
