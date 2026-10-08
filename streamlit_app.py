@@ -1,7 +1,6 @@
 # Import python packages
 import streamlit as st
 
-try:
 conn = st.connection("snowflake")
 session = conn.session()
 st.success("Connected")
