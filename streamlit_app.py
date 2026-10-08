@@ -1,5 +1,47 @@
 # Import python packages
 import streamlit as st
+import streamlit as st
+import base64
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.backends import default_backend
+import snowflake.connector
+
+# 1. Fetch the robust Base64 string from secrets
+b64_key_string = st.secrets["connections"]["snowflake"]["private_key"]
+
+# 2. Decode the Base64 string back into original PEM bytes
+raw_pem_bytes = base64.b64decode(b64_key_string)
+
+# 3. Deserialize safely using cryptography
+p_key = serialization.load_pem_private_key(
+    raw_pem_bytes,
+    password=None,
+    backend=default_backend()
+)
+
+pkb = p_key.private_bytes(
+    encoding=serialization.Encoding.DER,
+    format=serialization.PrivateFormat.PKCS8,
+    encryption_algorithm=serialization.NoEncryption()
+)
+
+# 4. Connect to Snowflake cleanly
+conn = snowflake.connector.connect(
+    account=st.secrets["connections"]["snowflake"]["account"],
+    user=st.secrets["connections"]["snowflake"]["user"],
+    role=st.secrets["connections"]["snowflake"]["role"],
+    warehouse=st.secrets["connections"]["snowflake"]["warehouse"],
+    database=st.secrets["connections"]["snowflake"]["database"],
+    schema=st.secrets["connections"]["snowflake"]["schema"],
+    private_key=pkb
+)
+
+# Test and confirm success
+cursor = conn.cursor()
+cursor.execute("SELECT CURRENT_VERSION();")
+st.success(f"🎉 Connected successfully! Snowflake Version: {cursor.fetchone()[0]}")
+
+
 from snowflake.snowpark.functions import col
 
 # Write directly to the app
