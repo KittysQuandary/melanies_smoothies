@@ -60,7 +60,7 @@ if ingredients_list:
         st.success('Your Smoothie is ordered, '+name_on_order+'!', icon="✅")
 
 import requests  
-url = "https://my.smoothiefroot.com/api/fruit/watermelon"
+url = "https://smoothiefroot.com/api/fruit/watermelon"
 smoothiefroot_response = requests.get(url)  
 st.write(url)
 print(repr(url))
