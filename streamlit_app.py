@@ -2,6 +2,7 @@
 import streamlit as st
 import base64
 import snowflake.connector
+from snowflake.snowpark.functions import col
 
 # 1. Fetch your single-line Base64 string from your Streamlit Dashboard secrets
 b64_key_string = st.secrets["connections"]["snowflake"]["private_key"]
@@ -25,7 +26,7 @@ cursor = conn.cursor()
 cursor.execute("SELECT CURRENT_VERSION();")
 st.success(f"🎉 Connected successfully! Snowflake Version: {cursor.fetchone()[0]}")
 
-from snowflake.snowpark.functions import col
+
 
 # Write directly to the app
 st.title(f"Customise Your Smoothie! :cup_with_straw:")
