@@ -65,7 +65,4 @@ smoothiefroot_response = requests.get(url)
 st.write(url)
 print(repr(url))
 st.text(smoothiefroot_response)
-response = requests.get(url)
-print(response.status_code)
-print(response.headers)
-print(response.text[:500])
+
